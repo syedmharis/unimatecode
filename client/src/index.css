@@ -1,0 +1,439 @@
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+h2 {
+    font-style: italic;
+}
+
+* {
+    font-family: 'Readex Pro', sans-serif;
+}
+
+.primary-title {
+    font-size: 90px;
+    color: rgb(255,255,255);
+}
+
+.primary-button {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    background: linear-gradient(45deg, rgb(244, 244, 244), rgb(56, 16, 104));
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+}
+
+.primary-button:hover {
+    background: linear-gradient(260deg, rgb(56, 18, 101), rgb(234, 234, 234));
+}
+
+.secondary-button {
+    color: rgb(121,119,119);
+    background-color: white;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: solid 2px rgb(121,119,119);
+    margin: 6px;
+}
+
+.secondary-button:hover {
+    color: rgb(48,48,48);
+    border: solid 2px rgb(48,48,48);
+}
+
+
+/*----- Navbar -----*/
+
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav .nav-button {
+    color: rgb(56, 16, 104);
+    background-color: rgb(255, 255, 255);
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    margin: 10px;
+}
+
+nav .nav-button:disabled {
+    background-color: rgb(189,180,180);
+    color: rgb(56, 16, 104);
+}
+
+nav .logo-container {
+    width: 200px;
+    margin: 15px;
+}
+
+nav .logo-container .logo{
+    width: 100%;
+}
+
+/*----- Home page -----*/
+
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: linear-gradient(to bottom right, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%
+    ), url('/Users/aishaalketbi/WebstormProjects/unimate-website copy 13/client/src/images/DALL·E 2024-10-29 15.11.00 - A university campus scene with a soft purple-themed color palette. The scene features students casually interacting, some on their phones as if swipin copy.png')
+}
+
+.home {
+    margin-top: 30vh;
+}
+
+
+
+
+/*----- Auth Modal -----*/
+
+.auth-modal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 360px;
+    height: 600px;
+    background-color: rgb(255,255,255);
+    border-radius: 10px;
+    padding: 40px;
+}
+
+.auth-modal .close-icon{
+    float: right;
+}
+
+.auth-modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-modal input[type=password],
+.auth-modal input[type=email] {
+    padding: 8px;
+    margin: 8px;
+    font-size: 17px;
+}
+
+/*----- OnBoardingPage -----*/
+
+.onboarding {
+    border-top: solid 1px rgb(213,213,213);
+
+}
+
+.onboarding form {
+    display: flex;
+    justify-content: center;
+}
+
+.onboarding form section {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 35%;
+    text-align: start;
+}
+
+.onboarding form input {
+    padding: 15px 30px;
+    margin: 10px 0;
+    font-size: 15px;
+    border: solid 2px rgb(219,219,219);
+    border-radius: 10px;
+}
+
+.onboarding form input:focus {
+    outline: none;
+    border-color: rgb(56, 16, 104);
+}
+
+.onboarding form input::-webkit-outer-spin-button,
+.onboarding form input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.onboarding form label {
+    margin: 10px 0;
+}
+
+.onboarding form .multiple-input-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.onboarding form .multiple-input-container input {
+    margin-right: 10px;
+}
+
+.onboarding form .multiple-input-container label{
+    padding: 10px;
+    border: solid 2px rgb(144,144,144);
+    border-radius: 10px;
+    transition: all 0.3s;
+    margin-right: 10px;
+}
+
+.onboarding form input[type="radio"] {
+    display: none;
+}
+
+.onboarding form input[type="number"] {
+    width: 10%;
+}
+
+.onboarding form input[type="radio"]:checked + label {
+    border: solid 2px rgb(56, 16, 104);
+}
+
+.onboarding form input[type="submit"]:hover {
+    background-color: rgb(235,235,235);
+}
+
+.onboarding form input[type="submit"]:active {
+    background-color: rgb(77, 44, 115);
+}
+
+.onboarding form .photo-container img{
+    width: 100%;
+}
+
+.onboarding form select {
+    padding: 10px 0px;
+    margin: 5px 0;
+    font-size: 15px;
+    border: solid 2px rgb(219,219,219);
+    border-radius: 10px;
+    width: 100%; /* This ensures the dropdown spans the width of its container */
+    min-width: 300px; /* You can adjust this value to make the dropdown wider */
+}
+
+.onboarding form select:focus {
+    outline: none;
+    border-color: rgb(56, 16, 104);
+}
+
+/* Set full width for major and fun prompts */
+.onboarding form input[name="major"],
+.onboarding form input[name="funPrompt1"],
+.onboarding form input[name="funPrompt2"],
+.onboarding form input[name="funPrompt3"],
+.onboarding form input[name="funPrompt4"] {
+    width: 270%;  /* Make sure these inputs take the full width of the form container */
+    max-width: 600px;  /* Adjust this value to set a limit if necessary */
+    padding: 12px;  /* Ensure padding for readability */
+    margin: 10px 0;  /* Consistent margins */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+
+
+
+
+
+
+
+
+/*----- Dashboard -----*/
+.dashboard{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.dashboard .swipe-container {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.swipe {
+    position: absolute;
+}
+
+.dashboard .card-container {
+    width: 450px;
+    height: 600px;
+}
+
+.card {
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+    /*transition: transform 0.3s ease-out;*/
+    /*will-change: transform;*/
+    width: 450px;
+    height: 600px;
+    border-radius: 30px;
+    background-size: cover;
+    background-position: center;
+}
+
+
+/*.card h3 {*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    margin: 10px;*/
+/*    color: #fff;*/
+/*}*/
+
+/* Card content for name, ethnicity, major, and about me */
+.card-content {
+    position: absolute;
+    bottom: 0; /* Position it at the bottom */
+    left: 0; /* Align to the left */
+    width: 100%; /* Make the content fill the entire width */
+    text-align: left; /* Align text to the left */
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    padding: 20px;
+    box-sizing: border-box; /* Ensure padding is included within the width */
+    border-radius: 0 0 10px 10px; /* Only round the bottom corners */
+}
+
+.card-content h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+
+
+
+
+.dashboard .swipe-info {
+    position: absolute;
+    bottom: 0;
+    padding: 5px;
+}
+
+/* Darkened background when View More is clicked */
+.card.darkened {
+    background-color: rgba(0, 0, 0, 0.7); /* Darkens the card */
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* View More content styles */
+.view-more-content {
+    margin-top: 15px;
+    color: white; /* Keep the text readable */
+}
+
+.view-more-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: linear-gradient(260deg, rgb(56, 18, 101), rgb(234, 234, 234));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-more-button:hover {
+    background: linear-gradient(45deg, rgb(244, 244, 244), rgb(56, 16, 104));
+}
+
+
+
+
+/*----- Chat Container -----*/
+
+.chat-container {
+    background-color: rgb(255,255,255);
+    box-shadow: rgba(0,0,0,0.05) 0px 6px 24px 0px,
+    rgba(0,0,0,0.08) 0px 0px 0px 0px;
+    width: 30%;
+    text-align: left;
+    z-index: 1;
+}
+
+.chat-container .chat-container-header {
+    background: linear-gradient(260deg, rgb(56, 18, 101), rgb(234, 234, 234));
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-container .option {
+    border: none;
+    background-color: rgb(255,255,255);
+    border-bottom: solid 4px rgb(56, 16, 104);;
+    font-size: 20px;
+    margin: 2px;
+    padding: 10px;
+}
+
+.chat-container .option:disabled {
+    border-bottom: solid 4px rgb(187.187,187);
+}
+
+.chat-container .profile,
+.chat-container .log-out-icon {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    color: rgb(255,255,255);
+}
+
+
+
+.img-container {
+    height:30px;
+    width:30px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 10px;
+}
+
+.img-container img {
+    width: 100%;
+}
+
+/*----- Chat Display -----*/
+
+.chat-display, .matches-display{
+    padding: 20px;
+    height: 60vh;
+    overflow-y: auto;
+}
+
+/*----- Chat Input -----*/
+
+.chat-input {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
