@@ -87,7 +87,10 @@ const OnBoarding = () => {
       );
       const imageUrl = response.data.secure_url;
 
-      setFormData({ url: imageUrl }); // Save the image URL to form data
+      setFormData((prevState) => ({
+        ...prevState,
+        url: imageUrl,
+      }));
     } catch (error) {
       console.error('Error uploading image:', error);
     } finally {
