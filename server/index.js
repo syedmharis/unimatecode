@@ -5,11 +5,21 @@ const {v4: uuidv4} = require('uuid')
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const bcrypt = require('bcrypt')
+const WebSocket = require('ws')
 require('dotenv').config()
 
-const uri = process.env.URI
 
 const app = express()
+const uri = process.env.URI
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+let db, messagesCollection;
+
+// Connect to MongoDB
+client.connect().then(() => {
+    db = client.db('app-data')
+    messagesCollection = db.collection('messages')
+}).catch(error => console.error('Error connecting to MongoDB:', error))
+
 app.use(cors())
 app.use(express.json())
 
@@ -306,6 +316,52 @@ app.post('/message', async (req, res) => {
     }
 })
 
+// WebSocket server setup
+const wss = new WebSocket.Server({ noServer: true })
 
-app.listen(PORT, () => console.log('Server running on PORT'+ PORT))
+// Function to broadcast the message to all connected clients
+function broadcastMessage(message) {
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(message))  // Send message to all clients
+        }
+    })
+}
+
+wss.on('connection', (ws) => {
+    console.log('A new client connected')
+
+    // Send all previous messages to the new client
+    messagesCollection.find().toArray().then(messages => {
+        ws.send(JSON.stringify(messages))  // Send all messages on new connection
+    })
+
+    ws.on('message', (message) => {
+        console.log('Received message:', message)
+
+        // Save incoming message to the database
+        const parsedMessage = JSON.parse(message)
+        messagesCollection.insertOne(parsedMessage)
+            .then(() => {
+                // Broadcast the new message to all clients
+                broadcastMessage(parsedMessage)
+            })
+            .catch(err => console.error('Error saving message:', err))
+    })
+
+    ws.on('close', () => {
+        console.log('Client disconnected')
+    })
+})
+
+// WebSocket upgrade handler
+app.server = app.listen(PORT, () => {
+    console.log('Server running on PORT ' + PORT)
+})
+
+app.server.on('upgrade', (request, socket, head) => {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request)
+    })
+})
 

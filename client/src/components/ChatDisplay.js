@@ -1,87 +1,70 @@
-import Chat from './Chat'
-import ChatInput from './ChatInput'
-import axios from 'axios'
-import { useEffect, useState} from "react";
+import { useState, useEffect } from "react";
+import Chat from "./Chat";
+import ChatInput from "./ChatInput";
 
-const ChatDisplay = ({ user, clickedUser}) => {
+const ChatDisplay = ({ user, clickedUser }) => {
+  console.log(user, clickedUser);
+  const [messages, setMessages] = useState([]);
+  const [ws, setWs] = useState(null);
 
-    const userId = user?.user_id
-    const clickedUserId = clickedUser?.user_id
-    const [usersMessages, setUsersMessages] = useState(null)
-    const [clickedUsersMessages, setClickedUsersMessages ] = useState(null)
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:8000");
 
-    const getUsersMessages = async () => {
+    socket.onopen = () => {
+      console.log("WebSocket connected");
+    };
 
-        try {
+    socket.onmessage = (event) => {
+        const res = JSON.parse(event.data);
+        console.log("Parsed WebSocket data:", res);
+      
+        // Flatten the array if needed
+        const messagesArray = Array.isArray(res) ? [].concat(...res) : [res];
+        
+        messagesArray.forEach((message) => {
+          if (
+            (message.from_userId === user.user_id &&
+              message.to_userId === clickedUser.user_id) ||
+            (message.from_userId === clickedUser.user_id &&
+              message.to_userId === user.user_id)
+          ) {
+            setMessages((prevMessages) => [...prevMessages, message]);
+          }
+        });
+      };
 
-            const response = await axios.get('http://localhost:8000/messages', {
-                params: {userId: userId, correspondingUserId: clickedUserId}
-            })
-             setUsersMessages(response.data)
-        } catch (err) {
-            console.log(err)
-        }
-    }
+    setWs(socket);
 
-    const getClickedUsersMessages = async () => {
+    return () => {
+      socket.close();
+    };
+  }, [user.user_id, clickedUser.user_id]);
 
-        try {
+  const formattedMessages = messages
+    .filter((message) => message.message) // Remove empty messages
+    .map((message) => ({
+      name:
+        message.from_userId === user.user_id
+          ? user.first_name
+          : clickedUser.first_name,
+      img: message.from_userId === user.user_id ? user.url : clickedUser.url,
+      message: message.message,
+      timestamp: message.timestamp,
+    }))
+    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)); // Sort by timestamp
 
-            const response = await axios.get('http://localhost:8000/messages', {
-                params: {userId: clickedUserId, correspondingUserId: userId}
-            })
-            setClickedUsersMessages(response.data)
-        } catch (err) {
-            console.log(err)
-        }
-    }
+  console.log("Formatted Messages:", formattedMessages);
 
-        useEffect(() => {
-            getUsersMessages()
-            getClickedUsersMessages()
+  return (
+    <div>
+      {formattedMessages.length ? (
+        <Chat descendingOrderMessages={formattedMessages} />
+      ) : (
+        <p>No messages to display.</p>
+      )}
+      <ChatInput user={user} clickedUser={clickedUser} />
+    </div>
+  );
+};
 
-
-        }, [])
-
-    const messages = []
-
-    console.log('usermessaes', usersMessages)
-
-
-    usersMessages?.forEach(message => {
-        const formattedMessage = {}
-        formattedMessage['name'] = user?.first_name
-        formattedMessage['img'] = user?.url
-        formattedMessage['message'] = message.message
-        formattedMessage['timestamp'] = message.timestamp
-        messages.push(formattedMessage)
-    })
-
-    clickedUsersMessages?.forEach(message => {
-        const formattedMessage = {}
-        formattedMessage['name'] = clickedUser?.first_name
-        formattedMessage['img'] = clickedUser?.url
-        formattedMessage['message'] = message.message
-        formattedMessage['timestamp'] = message.timestamp
-        messages.push(formattedMessage)
-    })
-
-    const descendingOrderMessages = messages?.sort((a,b) => a.timestamp.localeCompare(b.timestamp))
-
-
-
-
-    return (
-        <>
-            <Chat descendingOrderMessages={descendingOrderMessages}/>
-            <ChatInput
-                user={user}
-                clickedUser={clickedUser} getUserMessages={getUsersMessages} getClickedUsersMessages={getClickedUsersMessages}/>
-        </>
-
-    )
-
-
-}
-
-export default ChatDisplay
+export default ChatDisplay;

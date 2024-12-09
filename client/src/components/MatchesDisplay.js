@@ -6,8 +6,10 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
     const [matchedProfiles, setMatchedProfiles] = useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(null);
 
-    const matchedUserIds = matches.map(({ user_id }) => user_id);
+    const matchedUserIds = matches?.map(({ user_id }) => user_id);
     const userId = cookies.UserId;
+
+    console.log("in matches", matches)
 
     const getMatches = async () => {
         try {

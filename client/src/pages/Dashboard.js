@@ -13,7 +13,7 @@ const Dashboard = () => {
     const [viewMore, setViewMore] = useState(false); // State for "View More"
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
 
-    const userId = cookies.UserId
+    const userId = cookies?.UserId
 
     const handleViewMore = () => {
         setViewMore(!viewMore); // Toggle View More
@@ -120,7 +120,10 @@ const Dashboard = () => {
         console.log(name + ' left the screen!')
     }
 
-    const matchedUserIds = user?.matches.map(({user_id}) => user_id).concat(userId)
+    const matchedUserIds = [
+        ...(user?.matches?.map(({ user_id }) => user_id) || []),
+        ...(userId ? [userId] : []),
+    ];
 
     // const filteredGenderedUsers = genderedUsers?.filter(genderedUser => !matchedUserIds.includes(genderedUser.user_id))
     //
@@ -235,7 +238,7 @@ const Dashboard = () => {
                     <div className="swipe-container">
                         <div className="card-container">
                             {filteredUsers?.map((user) => (
-                                <TinderCard
+                                 <TinderCard
                                     className="swipe"
                                     key={user.user_id}
                                     onSwipe={(dir) => swiped(dir, user.user_id)}
@@ -272,8 +275,9 @@ const Dashboard = () => {
                                             )}
                                         </div>
                                     </div>
-                                </TinderCard>
+                                </TinderCard> 
                             ))}
+                           
                             <div className="swipe-info">
                                 {lastDirection ? <p>You swiped {lastDirection}</p> : <p/>}
                             </div>
