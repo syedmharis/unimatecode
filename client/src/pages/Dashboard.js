@@ -1,4 +1,4 @@
-import TinderCard from 'react-tinder-card'
+// import TinderCard from 'react-tinder-card'
 import {useEffect, useState} from 'react'
 import ChatContainer from '../components/ChatContainer'
 import {useCookies} from 'react-cookie'
@@ -21,11 +21,13 @@ const Dashboard = () => {
 
 
     const getUser = async () => {
+        console.log('ghetting user')
         try {
             const response = await axios.get('http://localhost:8000/user', {
                 params: {userId}
             })
             setUser(response.data)
+            console.log("userrr",user)
         } catch (error) {
             console.log(error)
         }
@@ -120,7 +122,7 @@ const Dashboard = () => {
         console.log(name + ' left the screen!')
     }
 
-    const matchedUserIds = user?.matches.map(({user_id}) => user_id).concat(userId)
+    const matchedUserIds = user?.matches?.map(({user_id}) => user_id).concat(userId)
 
     // const filteredGenderedUsers = genderedUsers?.filter(genderedUser => !matchedUserIds.includes(genderedUser.user_id))
     //
@@ -235,7 +237,7 @@ const Dashboard = () => {
                     <div className="swipe-container">
                         <div className="card-container">
                             {filteredUsers?.map((user) => (
-                                <TinderCard
+                                {/* <TinderCard
                                     className="swipe"
                                     key={user.user_id}
                                     onSwipe={(dir) => swiped(dir, user.user_id)}
@@ -272,7 +274,7 @@ const Dashboard = () => {
                                             )}
                                         </div>
                                     </div>
-                                </TinderCard>
+                                </TinderCard> */}
                             ))}
                             <div className="swipe-info">
                                 {lastDirection ? <p>You swiped {lastDirection}</p> : <p/>}
