@@ -26,7 +26,6 @@ const Dashboard = () => {
                 params: {userId}
             })
             setUser(response.data)
-            console.log("userrr",user)
         } catch (error) {
             console.log(error)
         }
